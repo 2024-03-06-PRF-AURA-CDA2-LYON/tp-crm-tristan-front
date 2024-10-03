@@ -9,7 +9,7 @@ export interface Customer {
   zipCode: string;
   country: string;
   city: string;
-  state: number;
+  state: string;
 }
 
 export interface Order {

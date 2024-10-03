@@ -1,1 +1,186 @@
-<p>customers works!</p>
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Clients</h2>
+
+  <div class="d-flex justify-content-between mb-3">
+    <a routerLink="/" class="btn btn-secondary">Accueil</a>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCustomerModal">Ajouter un client</button>
+  </div>
+
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+    <tr>
+      <th>Entreprise</th>
+      <th>Prénom</th>
+      <th>Nom</th>
+      <th>Email</th>
+      <th>Téléphone</th>
+      <th>Ville</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let customer of customers">
+      <td>{{ customer.companyName }}</td>
+      <td>{{ customer.firstName }}</td>
+      <td>{{ customer.lastName }}</td>
+      <td>{{ customer.email }}</td>
+      <td>{{ customer.phoneNumber }}</td>
+      <td>{{ customer.city }}</td>
+      <td>{{ translateState(customer.state)}}</td>
+      <td>
+        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#updateCustomerModal"
+                (click)="selectCustomerForUpdate(customer)">Modifier</button>
+        <button class="btn btn-danger" (click)="deleteCustomer(customer.id)">Retirer</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal pour add un customer -->
+  <div class="modal fade" id="addCustomerModal" tabindex="-1" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addCustomerModalLabel">Ajouter un client</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="addedCompanyName" class="form-label">Entreprise</label>
+              <input type="text" class="form-control" id="addedCompanyName" [(ngModel)]="newCustomer.companyName" name="companyName">
+            </div>
+
+            <div class="mb-3">
+              <label for="addedFirstName" class="form-label">Prénom</label>
+              <input type="text" class="form-control" id="addedFirstName" [(ngModel)]="newCustomer.firstName" name="firstName">
+            </div>
+
+            <div class="mb-3">
+              <label for="addedLastName" class="form-label">Nom</label>
+              <input type="text" class="form-control" id="addedLastName" [(ngModel)]="newCustomer.lastName" name="lastName">
+            </div>
+
+            <div class="mb-3">
+              <label for="addedEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="addedEmail" [(ngModel)]="newCustomer.email" name="email">
+            </div>
+
+            <div class="mb-3">
+              <label for="addedPhoneNumber" class="form-label">Téléphone</label>
+              <input type="text" class="form-control" id="addedPhoneNumber" [(ngModel)]="newCustomer.phoneNumber" name="phoneNumber">
+            </div>
+
+            <div class="mb-3">
+              <label for="addedAddress" class="form-label">Addresse</label>
+              <input type="text" class="form-control" id="addedAddress" [(ngModel)]="newCustomer.address" name="address">
+            </div>
+
+            <div class="mb-3">
+              <label for="addedZipCode" class="form-label">Code postal</label>
+              <input type="text" class="form-control" id="addedZipCode" [(ngModel)]="newCustomer.zipCode" name="zipCode">
+            </div>
+
+            <div class="mb-3">
+              <label for="addedCity" class="form-label">Ville</label>
+              <input type="text" class="form-control" id="addedCity" [(ngModel)]="newCustomer.city" name="city">
+            </div>
+
+            <div class="mb-3">
+              <label for="addedCountry" class="form-label">Pays</label>
+              <input type="text" class="form-control" id="addedCountry" [(ngModel)]="newCustomer.country" name="country">
+            </div>
+
+            <div class="mb-3">
+              <label for="addedState" class="form-label">Status</label>
+              <select class="form-control" id="addedState" [(ngModel)]="newCustomer.state" name="state">
+                <option value='0'>Actif</option>
+                <option value='1'>Inactif</option>
+              </select>
+            </div>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-primary" (click)="addCustomer()" data-bs-dismiss="modal">Confirmer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal pour update un customer -->
+  <div class="modal fade" id="updateCustomerModal" tabindex="-1" aria-labelledby="updateCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateCustomerModalLabel">Modifier un client</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form *ngIf="selectedCustomer">
+            <div class="mb-3">
+              <label for="updatedCompanyName" class="form-label">Entreprise</label>
+              <input type="text" class="form-control" id="updatedCompanyName" [(ngModel)]="selectedCustomer.companyName" name="companyName">
+            </div>
+
+            <div class="mb-3">
+              <label for="updatedFirstName" class="form-label">Prénom</label>
+              <input type="text" class="form-control" id="updatedFirstName" [(ngModel)]="selectedCustomer.firstName" name="firstName">
+            </div>
+
+            <div class="mb-3">
+              <label for="updatedLastName" class="form-label">Nom</label>
+              <input type="text" class="form-control" id="updatedLastName" [(ngModel)]="selectedCustomer.lastName" name="lastName">
+            </div>
+
+            <div class="mb-3">
+              <label for="updatedEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="updatedEmail" [(ngModel)]="selectedCustomer.email" name="email">
+            </div>
+
+            <div class="mb-3">
+              <label for="updatedPhoneNumber" class="form-label">Téléphone</label>
+              <input type="text" class="form-control" id="updatedPhoneNumber" [(ngModel)]="selectedCustomer.phoneNumber" name="phoneNumber">
+            </div>
+
+            <div class="mb-3">
+              <label for="updatedAddress" class="form-label">Addresse</label>
+              <input type="text" class="form-control" id="updatedAddress" [(ngModel)]="selectedCustomer.address" name="address">
+            </div>
+
+            <div class="mb-3">
+              <label for="updatedZipCode" class="form-label">Code postal</label>
+              <input type="text" class="form-control" id="updatedZipCode" [(ngModel)]="selectedCustomer.zipCode" name="zipCode">
+            </div>
+
+            <div class="mb-3">
+              <label for="updatedCity" class="form-label">Ville</label>
+              <input type="text" class="form-control" id="updatedCity" [(ngModel)]="selectedCustomer.city" name="city">
+            </div>
+
+            <div class="mb-3">
+              <label for="updatedCountry" class="form-label">Pays</label>
+              <input type="text" class="form-control" id="updatedCountry" [(ngModel)]="selectedCustomer.country" name="country">
+            </div>
+
+            <div class="mb-3">
+              <label for="updatedState" class="form-label">Status</label>
+              <select class="form-control" id="updatedState" [(ngModel)]="selectedCustomer.state" name="state">
+                <option value='0'>Actif</option>
+                <option value='1'>Inactif</option>
+              </select>
+            </div>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-primary" (click)="updateCustomer()" data-bs-dismiss="modal">Confirmer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

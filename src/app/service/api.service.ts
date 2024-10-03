@@ -23,7 +23,7 @@ export class ApiService {
   }
 
   // add un customer
-  addCustomer(customer: Customer): Observable<Customer> {
+  addCustomer(customer: { firstName: string; lastName: string; email: string }): Observable<Customer> {
     return this.http.post<Customer>(`${this.apiUrl}/customers`, customer);
   }
 
