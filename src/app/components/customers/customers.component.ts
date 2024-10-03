@@ -18,7 +18,7 @@ export class CustomersComponent implements OnInit {
     address: string;
     city: string;
     companyName: string;
-    state: number;
+    state: string;
     email: string
   } = {
     companyName: '',
@@ -30,7 +30,7 @@ export class CustomersComponent implements OnInit {
     zipCode: '',
     city: '',
     country: '',
-    state: 0}
+    state: ''}
   selectedCustomer: Customer | null = null;
 
   constructor(private apiService: ApiService) {}
