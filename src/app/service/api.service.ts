@@ -12,27 +12,27 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   // Récupérer la liste des clients
-  getCustomers(): Observable<any> {
+  getCustomer(): Observable<any> {
     return this.http.get(`${this.apiUrl}/customers`);
   }
 
   // add un customer
-  addCustomers(order: any): Observable<any> {
+  addCustomer(order: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/orders`, order);
   }
 
   // update un customer
-  updateCustomers(id: number, order: any): Observable<any> {
+  updateCustomer(id: number, order: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/orders/${id}`, order);
   }
 
   // Suppr un customer
-  deleteCustomers(id: number): Observable<any> {
+  deleteCustomer(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/orders/${id}`);
   }
 
   // Récupérer la liste des commandes
-  getOrders(): Observable<any> {
+  getOrder(): Observable<any> {
     return this.http.get(`${this.apiUrl}/orders`);
   }
 
