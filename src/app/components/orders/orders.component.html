@@ -1,1 +1,154 @@
-<p>orders works!</p>
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Commandes</h2>
+
+  <div class="d-flex justify-content-between mb-3">
+    <a routerLink="/" class="btn btn-secondary">Accueil</a>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addOrderModal">Ajouter une commande</button>
+  </div>
+
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+    <tr>
+      <th>Service</th>
+      <th>Description</th>
+      <th>Durée</th>
+      <th>Prix</th>
+      <th>TVA</th>
+      <th>Status</th>
+      <th>Client</th>
+      <td>Action</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let order of orders">
+      <td>{{ order.serviceType }}</td>
+      <td>{{ order.comment }}</td>
+      <td>{{ order.nbDays }} jours</td>
+      <td>{{ order.totalExcludeTax }}€</td>
+      <td>{{ order.tva}}%</td>
+      <td>{{ translateOrderState(order.state) }}</td>
+      <td>{{order.customer.companyName}}</td>
+      <td>
+        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#updateOrderModal"
+                (click)="selectOrderForUpdate(order)">Modifier</button>
+        <button class="btn btn-danger" (click)="deleteOrder(order.id)">Retirer</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal pour add une order -->
+  <div class="modal fade" id="addOrderModal" tabindex="-1" aria-labelledby="addOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addOrderModalLabel">Ajouter un client</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+<!--            <div class="mb-3">-->
+<!--              <label for="addedOrder" class="form-label">Client</label>-->
+<!--              <input type="text" class="form-control" id="addedOrder" [(ngModel)]="newOrder.customer.companyName" name="Order">-->
+<!--            </div>-->
+            <div class="mb-3">
+              <label for="addedServiceType" class="form-label">Titre</label>
+              <input type="text" class="form-control" id="addedServiceType" [(ngModel)]="newOrder.serviceType" name="serviceType">
+            </div>
+
+            <div class="mb-3">
+              <label for="addedComment" class="form-label">Description</label>
+              <input type="text" class="form-control" id="addedComment" [(ngModel)]="newOrder.comment" name="comment">
+            </div>
+
+            <div class="mb-3">
+              <label for="addedNbDays" class="form-label">Durée</label>
+              <input type="number" class="form-control" id="addedNbDays" [(ngModel)]="newOrder.nbDays" name="NbDays">
+            </div>
+            <div class="mb-3">
+              <label for="addedPrice" class="form-label">Prix</label>
+              <input type="number" class="form-control" id="addedPrice" [(ngModel)]="newOrder.totalExcludeTax" name="price">
+            </div>
+            <div class="mb-3">
+              <label for="addedTva" class="form-label">TVA</label>
+              <input type="number" class="form-control" id="addedTva" [(ngModel)]="newOrder.tva" name="tva">
+            </div>
+
+            <div class="mb-3">
+              <label for="addedState" class="form-label">Status</label>
+              <select class="form-control" id="addedState" [(ngModel)]="newOrder.state" name="state">
+                <option value='0'>Annulée</option>
+                <option value='1'>Option</option>
+                <option value='2'>Confirmée</option>
+              </select>
+            </div>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-primary" (click)="addOrder()" data-bs-dismiss="modal">Confirmer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal pour modifier une commande -->
+  <div class="modal fade" id="updateOrderModal" tabindex="-1" aria-labelledby="updateOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateOrderModalLabel">Modifier une commande</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form *ngIf="selectedOrder">
+            <div class="mb-3">
+              <label for="updatedServiceType" class="form-label">Titre</label>
+              <input type="text" class="form-control" id="updatedServiceType" [(ngModel)]="selectedOrder.serviceType" name="serviceType">
+            </div>
+            <div class="mb-3">
+              <label for="updatedComment" class="form-label">Description</label>
+              <input type="text" class="form-control" id="updatedComment" [(ngModel)]="selectedOrder.comment" name="comment">
+            </div>
+
+            <div class="mb-3">
+              <label for="updatedCompanyName" class="form-label">Client</label>
+              <input type="text" class="form-control" id="updatedCompanyName" [(ngModel)]="selectedOrder.customer.companyName" name="companyName">
+            </div>
+
+            <div class="mb-3">
+              <label for="updatedNbDays" class="form-label">Durée</label>
+              <input type="number" class="form-control" id="updatedNbDays" [(ngModel)]="selectedOrder.nbDays" name="nbDays">
+            </div>
+
+            <div class="mb-3">
+              <label for="updatedPrice" class="form-label">Prix</label>
+              <input type="number" class="form-control" id="updatedPrice" [(ngModel)]="selectedOrder.totalExcludeTax" name="price">
+            </div>
+
+            <div class="mb-3">
+              <label for="updatedTva" class="form-label">TVA</label>
+              <input type="number" class="form-control" id="updatedTva" [(ngModel)]="selectedOrder.tva" name="tva">
+            </div>
+
+            <div class="mb-3">
+              <label for="updatedState" class="form-label">Status</label>
+              <select class="form-control" id="updatedState" [(ngModel)]="selectedOrder.state" name="state">
+                <option value='CANCELED'>Annulée</option>
+                <option value='OPTION'>Option</option>
+                <option value='CONFIRMED'>Confirmée</option>
+              </select>
+            </div>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-primary" (click)="updateOrder()" data-bs-dismiss="modal">Confirmer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

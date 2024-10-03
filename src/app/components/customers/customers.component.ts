@@ -9,28 +9,7 @@ import { Customer } from '../../interface/interface';
 })
 export class CustomersComponent implements OnInit {
   customers: Customer[] = [];
-  newCustomer: {
-    firstName: string;
-    lastName: string;
-    zipCode: string;
-    country: string;
-    phoneNumber: string;
-    address: string;
-    city: string;
-    companyName: string;
-    state: string;
-    email: string
-  } = {
-    companyName: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
-    address: '',
-    zipCode: '',
-    city: '',
-    country: '',
-    state: ''}
+  newCustomer: Customer = {} as Customer;
   selectedCustomer: Customer | null = null;
 
   constructor(private apiService: ApiService) {}

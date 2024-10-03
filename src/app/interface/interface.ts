@@ -18,7 +18,7 @@ export interface Order {
   tva: number;
   nbDays: number;
   totalExcludeTax: number;
-  state: number;
+  state: string;
   comment: string;
-  customerId: number;
+  customer: Customer;
 }
