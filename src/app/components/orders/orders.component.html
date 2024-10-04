@@ -42,15 +42,19 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addOrderModalLabel">Ajouter un client</h5>
+          <h5 class="modal-title" id="addOrderModalLabel">Ajouter une commande</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form>
-<!--            <div class="mb-3">-->
-<!--              <label for="addedOrder" class="form-label">Client</label>-->
-<!--              <input type="text" class="form-control" id="addedOrder" [(ngModel)]="newOrder.customer.companyName" name="Order">-->
-<!--            </div>-->
+            <div class="mb-3">
+              <label for="addedCustomer" class="form-label">Client</label>
+              <select class="form-control" id="addedCustomer" [(ngModel)]="newOrder.customer.id" name="customer">
+                <option *ngFor="let customer of customers" [value]="customer.id">
+                  {{ customer.companyName }}
+                </option>
+              </select>
+            </div>
             <div class="mb-3">
               <label for="addedServiceType" class="form-label">Titre</label>
               <input type="text" class="form-control" id="addedServiceType" [(ngModel)]="newOrder.serviceType" name="serviceType">
@@ -113,9 +117,14 @@
             </div>
 
             <div class="mb-3">
-              <label for="updatedCompanyName" class="form-label">Client</label>
-              <input type="text" class="form-control" id="updatedCompanyName" [(ngModel)]="selectedOrder.customer.companyName" name="companyName">
+              <label for="updatedCustomer" class="form-label">Client</label>
+              <select class="form-control" id="updatedCustomer" [(ngModel)]="selectedOrder.customer.id" name="customer">
+                <option *ngFor="let customer of customers" [value]="customer.id">
+                  {{ customer.companyName }}
+                </option>
+              </select>
             </div>
+
 
             <div class="mb-3">
               <label for="updatedNbDays" class="form-label">Durée</label>
